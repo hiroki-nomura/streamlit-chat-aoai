@@ -2,20 +2,11 @@ import streamlit as st
 from openai import AzureOpenAI
 
 client = AzureOpenAI()
-
-# openai.api_type = "azure"
-# openai.api_version = "2023-07-01-preview"
-# openai.api_base = os.environ['OPENAI_URI']
-# # openai.api_base = "https://assistantai-dev-01.openai.azure.com/"
-# openai.api_key = os.environ['OPENAI_KEY']
-# # openai.api_key = "b39a619eb5994cbe898bfe5d74f6b536"
-
-st.title("StreamlitのChatサンプル")
-
-# 定数定義
 USER_NAME = "user"
 ASSISTANT_NAME = "assistant"
 model="gpt-35-turbo"
+
+st.title("StreamlitのChatサンプル")
 
 def response_chatgpt(user_msg: str, chat_history: list = []):
 
@@ -31,9 +22,6 @@ def response_chatgpt(user_msg: str, chat_history: list = []):
     #ユーザメッセージをmessagesリストに追加
     messages.append({"role": USER_NAME, "content": user_msg})
 
-    print(" ■システムメッセージ: "  + system_msg)
-    print(" ■ユーザメッセージ: " + user_msg)
-
     response = client.chat.completions.create(
         model=model,
         messages=messages,
@@ -41,13 +29,12 @@ def response_chatgpt(user_msg: str, chat_history: list = []):
     )
     return response
 
-
 # チャットログを保存したセッション情報を初期化
 if "chat_log" not in st.session_state:
     st.session_state.chat_log = []
 
 
-user_msg = st.chat_input("ここにメッセージを入力")
+user_msg = st.chat_input("メッセージを入力")
 if user_msg:
     # 以前のチャットログを表示
     for chat in st.session_state.chat_log:
